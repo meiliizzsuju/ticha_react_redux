@@ -23,7 +23,7 @@ const data: Item[] = [{ guid: "guid1", name: "name1", path: ["path1", "path2"], 
 
 
 
-const Table = () => {
+const DataTable = () => {
     //should be memoized or stable
     const columns = useMemo<MRT_ColumnDef<Item>[]>(
         () => [
@@ -58,4 +58,4 @@ const Table = () => {
     )
 }
 
-export default Table
+export default DataTable
