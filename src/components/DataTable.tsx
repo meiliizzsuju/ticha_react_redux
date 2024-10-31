@@ -1,9 +1,10 @@
-import { useMemo } from 'react';
-import {
-    MaterialReactTable,
-    useMaterialReactTable,
-    type MRT_ColumnDef,
-} from 'material-react-table';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 //DataType
 type Properties = {
@@ -24,37 +25,36 @@ const data: Item[] = [{ guid: "guid1", name: "name1", path: ["path1", "path2"], 
 
 
 const DataTable = () => {
-    //should be memoized or stable
-    const columns = useMemo<MRT_ColumnDef<Item>[]>(
-        () => [
-            {
-                accessorKey: 'guid', 
-                header: 'guid',
-                size: 150,
-            },
-            {
-                accessorKey: 'name',
-                header: 'Name',
-                size: 150,
-            },
-            {
-                accessorKey: 'path', //normal accessorKey
-                header: 'Path',
-                size: 200,
-            },
-        ],
-        [],
-    );
-
-    
-    const table = useMaterialReactTable({
-        columns,
-        data, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
-    });
-
 
     return (
-        <MaterialReactTable table={table} />
+        <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>GUI</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Path</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {data.map((data) => (
+            <TableRow
+              key={data.guid}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              className='MuiTableRow-hover'
+            >
+              <TableCell component="th" scope="row">
+                {data.guid}
+              </TableCell>
+              <TableCell component="th" scope="row">
+                {data.name}
+              </TableCell>
+              <TableCell>{data.path}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
     )
 }
 
