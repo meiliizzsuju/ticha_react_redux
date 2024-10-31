@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -5,17 +6,19 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Box, Modal } from '@mui/material';
+
 
 //DataType
 type Properties = {
-    [key: string]: string | number;
+  [key: string]: string | number;
 };
 
 type Item = {
-    guid: string;
-    name: string;
-    path: Array<string>;
-    properties: Properties;
+  guid: string;
+  name: string;
+  path: Array<string>;
+  properties: Properties;
 };
 
 //nested data is ok, see accessorKeys in ColumnDef below
@@ -25,37 +28,91 @@ const data: Item[] = [{ guid: "guid1", name: "name1", path: ["path1", "path2"], 
 
 
 const DataTable = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [selectedItemID, setSelectedItemID] = useState<string | null>(null);
 
-    return (
-        <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>GUI</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Path</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((data) => (
-            <TableRow
-              key={data.guid}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              className='MuiTableRow-hover'
-            >
-              <TableCell component="th" scope="row">
-                {data.guid}
-              </TableCell>
-              <TableCell component="th" scope="row">
-                {data.name}
-              </TableCell>
-              <TableCell>{data.path}</TableCell>
+  const handleOpen = (item: Item) => {
+    setSelectedItem(item);
+    setSelectedItemID(item.guid);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItem(null);
+    setSelectedItemID(null)
+  };
+
+  return (
+    <div>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>GUI</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Path</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-    )
+          </TableHead>
+          <TableBody>
+            {data.map((item) => (
+              <TableRow
+                key={item.guid}
+                sx={{ '&:last-child td, &:last-child th': { border: 0, cursor: "pointer" } }}
+                className='MuiTableRow-hover'
+                onClick={() => handleOpen(item)}
+                selected={selectedItemID === item.guid}
+              >
+                <TableCell component="th" scope="row">
+                  {item.guid}
+                </TableCell>
+                <TableCell component="th" scope="row">
+                  {item.name}
+                </TableCell>
+                <TableCell>{item.path}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Box
+        sx={{
+          height: 300,
+          flexGrow: 1,
+          minWidth: 300,
+          transform: 'translateZ(0)',
+        }}
+      >
+        <Modal
+          open={open} onClose={handleClose}
+        >
+          <Box
+            sx={(theme) => ({
+              position: 'relative',
+              width: 400,
+              bgcolor: 'background.paper',
+              border: '2px solid #000',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: theme.shadows[5],
+              p: 4,
+            })}
+          >
+            {selectedItem && (
+              <div>
+                <p><strong>Path:</strong> {selectedItem.path.join(', ')}</p>
+                {Object.entries(selectedItem.properties).map(([key, value]) => (
+                  <p key={key}><strong>{key}:</strong> {value}</p>
+                ))}
+              </div>
+            )}
+          </Box>
+        </Modal>
+      </Box>
+    </div>
+  )
 }
 
 export default DataTable
