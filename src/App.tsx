@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import DataTableWithModal from './components/DataTableWithModal';
+import DataTable from './components/DataTable';
 
 function App() {
   return (
-    <DataTableWithModal/>
+    <DataTable/>
   );
 }
 
