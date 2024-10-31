@@ -4,13 +4,25 @@ import { RootState, AppDispatch } from '../redux/store';
 import { fetchItems, Item } from '../redux/itemsSlice';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, Modal } from '@mui/material';
 import ItemModal from './itemModal';
+import { styled } from '@mui/material/styles';
+
+// styled table cell
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#515151",
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,9 +56,9 @@ const DataTable: React.FC = () => {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>GUID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Path</TableCell>
+              <StyledTableCell>GUID</StyledTableCell>
+              <StyledTableCell>Name</StyledTableCell>
+              <StyledTableCell>Path</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -58,9 +70,9 @@ const DataTable: React.FC = () => {
                 onClick={() => handleOpen(item)}
                 selected={selectedItemID === item.guid}
               >
-                <TableCell>{item.guid}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.path.join('/')}</TableCell>
+                <StyledTableCell component="th" scope="row">{item.guid}</StyledTableCell>
+                <StyledTableCell>{item.name}</StyledTableCell>
+                <StyledTableCell>{item.path.join('/')}</StyledTableCell>
               </TableRow>
             ))}
           </TableBody>

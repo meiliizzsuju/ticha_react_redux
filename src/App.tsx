@@ -1,11 +1,11 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import DataTable from './components/DataTable';
+import { Home } from './components/Home';
 
 function App() {
   return (
-    <DataTable/>
+    <Home/>
   );
 }
 
