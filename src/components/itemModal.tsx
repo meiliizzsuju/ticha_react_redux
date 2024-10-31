@@ -37,17 +37,33 @@ const ItemModal: React.FC<ItemModalProps> = ({ open, onClose, selectedItem }) =>
                             <Tab label="Image" value="2" />
                         </Tabs>
                         {value === '1' && (
-                            <div>
-                                <p><strong>Path:</strong> {selectedItem.path.join(', ')}</p>
-                                {Object.entries(selectedItem.properties).map(([key, value]) => (
-                                    <p key={key}><strong>{key}:</strong> {value}</p>
-                                ))}
-                            </div>
+                            <Box sx={{ mt: 2 }}>
+                                {Object.entries(selectedItem.properties).map(([key, value]) => {
+                                    // Determine the style based on the key
+                                    const alignright: React.CSSProperties = (key === 'propNumber' || key === 'date') ? { textAlign: 'right' } : {};
+
+                                    return (
+                                        <Box key={key} sx={{
+                                            width: '100%',
+                                            maxWidth: 300,
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            py: 1,
+                                        }}>
+                                            <strong>{key}</strong>
+                                            <span style={{
+                                                minWidth: '10em',
+                                                ...alignright
+                                            }}>{value}</span>
+                                        </Box>
+                                    );
+                                })}
+                            </Box>
                         )}
                         {value === '2' && (
-                            <div>
-                                image here
-                            </div>
+                            <Box>
+                                <img src={`http://localhost:8080/image/${selectedItem.guid}`} alt="image" loading="lazy" style={{width: '100%'}}/>
+                            </Box>
                         )}
                     </div>
                 )}
