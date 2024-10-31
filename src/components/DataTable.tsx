@@ -53,13 +53,10 @@ const DataTable: React.FC = () => {
             {items.map((item) => (
               <TableRow
                 key={item.guid}
-                sx={{
-                  backgroundColor: selectedItemID === item.guid ? 'rgba(0, 0, 255, 0.2)' : 'transparent',
-                  '&:hover': {
-                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                  },
-                }}
+                sx={{ '&:last-child td, &:last-child th': { border: 0}, cursor: "pointer" }}
+                className='MuiTableRow-hover'
                 onClick={() => handleOpen(item)}
+                selected={selectedItemID === item.guid}
               >
                 <TableCell>{item.guid}</TableCell>
                 <TableCell>{item.name}</TableCell>
