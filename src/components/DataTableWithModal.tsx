@@ -1,5 +1,3 @@
-// src/DataTable.tsx
-
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../redux/store';
@@ -12,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, Modal } from '@mui/material';
+import ItemModal from './itemModal';
 
 const DataTable: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -70,39 +69,7 @@ const DataTable: React.FC = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <Box
-        sx={{
-          height: 300,
-          flexGrow: 1,
-          minWidth: 300,
-          transform: 'translateZ(0)',
-        }}
-      >
-        <Modal open={open} onClose={handleClose}>
-          <Box
-            sx={(theme) => ({
-              position: 'relative',
-              width: 400,
-              bgcolor: 'background.paper',
-              border: '2px solid #000',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              boxShadow: theme.shadows[5],
-              p: 4,
-            })}
-          >
-            {selectedItem && (
-              <div>
-                <p><strong>Path:</strong> {selectedItem.path.join(', ')}</p>
-                {Object.entries(selectedItem.properties).map(([key, value]) => (
-                  <p key={key}><strong>{key}:</strong> {value}</p>
-                ))}
-              </div>
-            )}
-          </Box>
-        </Modal>
-      </Box>
+      <ItemModal open={open} onClose={handleClose} selectedItem={selectedItem} />
     </div>
   );
 };
